@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 rcpp_image_inpaint <- function(patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode) {
-    .Call(`_imageInpainting_rcpp_image_inpaint`, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
+    invisible(.Call(`_imageInpainting_rcpp_image_inpaint`, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode))
 }
 

@@ -27,6 +27,8 @@
 #include <assert.h>
 #include "image_inpainting.h"
 
+using namespace Rcpp;
+
 // static void show_help();
 // 
 // /// help on usage of inpainting code
@@ -135,7 +137,7 @@
 // }
 
 // [[Rcpp::export]]
-SEXP rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
+void rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
   
   char *fileIn;
   char *fileInOcc;
@@ -152,10 +154,8 @@ SEXP rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFea
   
   printf("\n\nTotal execution time: %f\n",timeTaken);
   
-  // Rcpp::List result = Rcpp::List::create(Rcpp::Named("result") = "success",
-  //                               Rcpp::Named("time taken") = timeTaken, 
-  //                               Rcpp::Named("Output file path") = fileOut);
-  
-  //return result;
+  //return List::create(_["result"] = "success",
+  //                   _["time taken"] = timeTaken,
+  //                   _["Output file path"] = fileOut);
 }
 

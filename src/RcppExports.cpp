@@ -6,18 +6,17 @@
 using namespace Rcpp;
 
 // rcpp_image_inpaint
-SEXP rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode);
+void rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode);
 RcppExport SEXP _imageInpainting_rcpp_image_inpaint(SEXP patchSizeXSEXP, SEXP patchSizeYSEXP, SEXP nLevelsSEXP, SEXP useFeaturesSEXP, SEXP verboseModeSEXP) {
 BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< int >::type patchSizeX(patchSizeXSEXP);
     Rcpp::traits::input_parameter< int >::type patchSizeY(patchSizeYSEXP);
     Rcpp::traits::input_parameter< int >::type nLevels(nLevelsSEXP);
     Rcpp::traits::input_parameter< bool >::type useFeatures(useFeaturesSEXP);
     Rcpp::traits::input_parameter< bool >::type verboseMode(verboseModeSEXP);
-    rcpp_result_gen = Rcpp::wrap(rcpp_image_inpaint(patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode));
-    return rcpp_result_gen;
+    rcpp_image_inpaint(patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode);
+    return R_NilValue;
 END_RCPP
 }
 
