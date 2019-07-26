@@ -6,23 +6,26 @@
 using namespace Rcpp;
 
 // image_inpaint
-List image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode);
-RcppExport SEXP _imageInpainting_image_inpaint(SEXP patchSizeXSEXP, SEXP patchSizeYSEXP, SEXP nLevelsSEXP, SEXP useFeaturesSEXP, SEXP verboseModeSEXP) {
+List image_inpaint(std::string fileInS, std::string fileInOccS, std::string fileOutS, int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode);
+RcppExport SEXP _imageInpainting_image_inpaint(SEXP fileInSSEXP, SEXP fileInOccSSEXP, SEXP fileOutSSEXP, SEXP patchSizeXSEXP, SEXP patchSizeYSEXP, SEXP nLevelsSEXP, SEXP useFeaturesSEXP, SEXP verboseModeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< std::string >::type fileInS(fileInSSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fileInOccS(fileInOccSSEXP);
+    Rcpp::traits::input_parameter< std::string >::type fileOutS(fileOutSSEXP);
     Rcpp::traits::input_parameter< int >::type patchSizeX(patchSizeXSEXP);
     Rcpp::traits::input_parameter< int >::type patchSizeY(patchSizeYSEXP);
     Rcpp::traits::input_parameter< int >::type nLevels(nLevelsSEXP);
     Rcpp::traits::input_parameter< bool >::type useFeatures(useFeaturesSEXP);
     Rcpp::traits::input_parameter< bool >::type verboseMode(verboseModeSEXP);
-    rcpp_result_gen = Rcpp::wrap(image_inpaint(patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode));
+    rcpp_result_gen = Rcpp::wrap(image_inpaint(fileInS, fileInOccS, fileOutS, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_imageInpainting_image_inpaint", (DL_FUNC) &_imageInpainting_image_inpaint, 5},
+    {"_imageInpainting_image_inpaint", (DL_FUNC) &_imageInpainting_image_inpaint, 8},
     {NULL, NULL, 0}
 };
 

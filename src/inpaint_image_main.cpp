@@ -137,12 +137,12 @@ using namespace Rcpp;
 // }
 
 // [[Rcpp::export]]
-List image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
+List image_inpaint(std::string fileInS, std::string fileInOccS, std::string fileOutS, int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
   
-  char *fileIn;
-  char *fileInOcc;
-  char *fileOut;
-  
+  const char *fileIn = fileInS.c_str();
+  const char *fileInOcc = fileInOccS.c_str();
+  const char *fileOut = fileOutS.c_str();
+
   time_t startTime,stopTime;
   time(&startTime);
   
