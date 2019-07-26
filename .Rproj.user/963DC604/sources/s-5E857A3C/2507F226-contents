@@ -1,0 +1,12 @@
+Package: imageInpainting
+Type: Package
+Title: Provides Image Inpainting in R as a wrapper over C++ library
+Version: 1.0
+Date: 2019-07-26
+Author: Muhammad Saad Saif
+Maintainer: Muhammad Saad Saif <msaif@uni-muenster.de>
+Description: Interfaces with an advanced Image Inpainting C++ library using Rcpp.
+License: GPL (>= 2)
+Imports: Rcpp (>= 1.0.1)
+LinkingTo: Rcpp
+

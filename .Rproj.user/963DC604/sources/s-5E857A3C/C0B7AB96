@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564151005478.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C0B7AB96",
+    "lastKnownWriteTime" : 1564154265,
+    "last_content_update" : 1564154265553,
+    "path" : "~/Documents/Geoinformatics/first-semester/Spatial Data Sciene with R/project/imageInpainting/src/inpaint_image_main.cpp",
+    "project_path" : "src/inpaint_image_main.cpp",
+    "properties" : {
+        "cursorPosition" : "151,2",
+        "scrollLine" : "135"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "cpp"
+}

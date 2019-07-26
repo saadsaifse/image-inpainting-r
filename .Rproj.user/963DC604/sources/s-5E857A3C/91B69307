@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564153638292.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "91B69307",
+    "lastKnownWriteTime" : 1564153642,
+    "last_content_update" : 1564153642292,
+    "path" : "~/Documents/Geoinformatics/first-semester/Spatial Data Sciene with R/project/imageInpainting/src/Makevars",
+    "project_path" : "src/Makevars",
+    "properties" : {
+        "cursorPosition" : "0,15",
+        "scrollLine" : "0"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "makefile"
+}

@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1564151006613.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "342146548",
+    "id" : "8AE3B405",
+    "lastKnownWriteTime" : 1471422509,
+    "last_content_update" : 1471422509,
+    "path" : "~/Documents/Geoinformatics/first-semester/Spatial Data Sciene with R/project/imageInpainting/src/image_structures.h",
+    "project_path" : "src/image_structures.h",
+    "properties" : {
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 5,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "h"
+}
