@@ -137,7 +137,7 @@ using namespace Rcpp;
 // }
 
 // [[Rcpp::export]]
-void rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
+List image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
   
   char *fileIn;
   char *fileInOcc;
@@ -154,8 +154,7 @@ void rcpp_image_inpaint(int patchSizeX, int patchSizeY, int nLevels, bool useFea
   
   printf("\n\nTotal execution time: %f\n",timeTaken);
   
-  //return List::create(_["result"] = "success",
-  //                   _["time taken"] = timeTaken,
-  //                   _["Output file path"] = fileOut);
+  return List::create(_["result"] = "success",
+                     _["time taken"] = timeTaken);
 }
 
