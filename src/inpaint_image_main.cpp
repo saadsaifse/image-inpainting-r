@@ -154,7 +154,11 @@ List image_inpaint(std::string fileInS, std::string fileInOccS, std::string file
   
   printf("\n\nTotal execution time: %f\n",timeTaken);
   
-  return List::create(_["result"] = "success",
-                     _["time taken"] = timeTaken);
+  return List::create(Named("result") = "success",
+                     Named("timeTaken") = timeTaken,
+                     Named("outputFilePath") = fileOutS,
+                     Named("inputFilePath") = fileInS,
+                     Named("occlusionFilePath") = fileInOccS
+                      );
 }
 

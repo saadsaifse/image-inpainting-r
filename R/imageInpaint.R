@@ -12,9 +12,20 @@
 #' @export
 
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
+  inputFile <- file.choose();
+
   
   result <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
   class(result) <- "inpainting"
   result
+}
+
+#' @export
+print.inpainting <- function(x, ...){
+  cat(sep = "\n")
+  cat("Image inpainting result", sep = "\n")
+  cat(sprintf("  Result : %s", x$result), sep = "\n")
+  cat(sprintf("  Total time taken (sec) : %s", x$timeTaken), sep = "\n")
+  cat(sprintf("  Output image path : %s", x$outputFilePath), sep = "\n")
 }
 
