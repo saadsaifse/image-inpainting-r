@@ -12,9 +12,6 @@
 #' @export
 
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
-  inputFile <- file.choose();
-
-  
   result <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
   class(result) <- "inpainting"
   result
@@ -29,3 +26,16 @@ print.inpainting <- function(x, ...){
   cat(sprintf("  Output image path : %s", x$outputFilePath), sep = "\n")
 }
 
+#' @export
+plot.inpainting <- function(x, ...){
+  
+  layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
+  
+  outputImage <- load.image(x$outputFilePath)
+  inputImage <- load.image(x$inputFilePath)
+  occlusionImage <- load.image(x$occlusionFilePath)
+  
+  plot(outputImage, main = "Inpainted image")
+  plot(inputImage, main = "Input image")
+  plot(occlusionImage, main = "Occlusion input image")
+}
