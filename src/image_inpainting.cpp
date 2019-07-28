@@ -12,6 +12,8 @@
  */
 
 #include "image_inpainting.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 patchMatchParameterStruct * initialise_patch_match_parameters(
 	int patchSizeX, int patchSizeY, int imgSizeX, int imgSizeY, bool verboseMode)
@@ -38,17 +40,17 @@ patchMatchParameterStruct * initialise_patch_match_parameters(
 void display_patch_match_parameters(patchMatchParameterStruct *patchMatchParams)
 {
 
-	printf("\n*************************\n");
-	printf("* PATCHMATCH PARAMETERS *\n");
-	printf("*************************\n");
+	Rprintf("\n*************************\n");
+	Rprintf("* PATCHMATCH PARAMETERS *\n");
+	Rprintf("*************************\n");
 	
-	printf("Patch size X : %d\n",patchMatchParams->patchSizeX);
-	printf("Patch size Y : %d\n",patchMatchParams->patchSizeY);
-	printf("Number of propagation/random search iterations: %d\n",patchMatchParams->nIters);
-	printf("Random search reduction factor (alpha) : %f\n",patchMatchParams->alpha);
-	printf("Maximum search shift allowed (-1 for whole image) : %f\n",patchMatchParams->maxShiftDistance);
-	printf("Full search (should be activated only for experimental purposes !!) : %d\n",patchMatchParams->fullSearch);
-	printf("Verbose mode : %d\n",patchMatchParams->verboseMode);
+	Rprintf("Patch size X : %d\n",patchMatchParams->patchSizeX);
+	Rprintf("Patch size Y : %d\n",patchMatchParams->patchSizeY);
+	Rprintf("Number of propagation/random search iterations: %d\n",patchMatchParams->nIters);
+	Rprintf("Random search reduction factor (alpha) : %f\n",patchMatchParams->alpha);
+	Rprintf("Maximum search shift allowed (-1 for whole image) : %f\n",patchMatchParams->maxShiftDistance);
+	Rprintf("Full search (should be activated only for experimental purposes !!) : %d\n",patchMatchParams->fullSearch);
+	Rprintf("Verbose mode : %d\n",patchMatchParams->verboseMode);
 }
 
 inpaintingParameterStruct * initialise_inpainting_parameters(int nLevels, bool useFeatures,
@@ -68,16 +70,16 @@ inpaintingParameterStruct * initialise_inpainting_parameters(int nLevels, bool u
 
 void display_inpainting_parameters(inpaintingParameterStruct *inpaintingParams)
 {
-	printf("\n*************************\n");
-	printf("* INPAINTING PARAMETERS *\n");
-	printf("*************************\n");
+	Rprintf("\n*************************\n");
+	Rprintf("* INPAINTING PARAMETERS *\n");
+	Rprintf("*************************\n");
 
-	printf("Number of levels : %d\n",inpaintingParams->nLevels);
-	printf("Use features : %d\n",inpaintingParams->useFeatures);
-	printf("Residual threshold: %f\n",inpaintingParams->residualThreshold);
-	printf("Maximum number of iterations: %d\n",inpaintingParams->maxIterations);
+	Rprintf("Number of levels : %d\n",inpaintingParams->nLevels);
+	Rprintf("Use features : %d\n",inpaintingParams->useFeatures);
+	Rprintf("Residual threshold: %f\n",inpaintingParams->residualThreshold);
+	Rprintf("Maximum number of iterations: %d\n",inpaintingParams->maxIterations);
 	
-	printf("*************************\n\n");
+	Rprintf("*************************\n\n");
 
 }
 
@@ -135,11 +137,11 @@ void inpaint_image_wrapper(const char *fileIn,const char *fileOccIn, const char 
 	size_t nOccX,nOccY,nOccC;
 	
 	//read input image
-	printf("Reading input image\n");
+	Rprintf("Reading input image\n");
 	float *inputImage = read_image(fileIn,&nx,&ny,&nc);
 	
 	//read input occlusion
-	printf("Reading input occlusion\n");
+	Rprintf("Reading input occlusion\n");
 	float *inputOcc = read_image(fileOccIn,&nOccX,&nOccY,&nOccC);
 	
 	// ****************************************** //
@@ -214,7 +216,7 @@ patchMatchParameterStruct *patchMatchParams, inpaintingParameterStruct *inpainti
 	{
 		double t1 = clock();
 		featuresPyramid = create_feature_pyramid(imgInput, occInput, inpaintingParams->nLevels);
-		MY_PRINTF("\n\nFeatures calculation time: %f\n",((double)(clock()-t1)) / CLOCKS_PER_SEC);
+		Rprintf("\n\nFeatures calculation time: %f\n",((double)(clock()-t1)) / CLOCKS_PER_SEC);
 	}
 	else
 	{
@@ -236,7 +238,7 @@ patchMatchParameterStruct *patchMatchParams, inpaintingParameterStruct *inpainti
 	nTupleImage *shiftMap=NULL;
 	for (int level=( (inpaintingParams->nLevels)-1); level>=0; level--)
 	{
-		printf("Current pyramid level : %d\n",level);
+		Rprintf("Current pyramid level : %d\n",level);
 		nTupleImage *imgPrevious,*occInpaint,*occDilate;
 
 		if (patchMatchParams->maxShiftDistance != -1)		
@@ -262,10 +264,10 @@ patchMatchParameterStruct *patchMatchParams, inpaintingParameterStruct *inpainti
 		{
 			shiftMap = new nTupleImage(imgInpaint->xSize,imgInpaint->ySize,3,imgInpaint->patchSizeX,imgInpaint->patchSizeY,IMAGE_INDEXING);
 			shiftMap->set_all_image_values(0);
-			printf("\nInitialisation started\n\n\n");
+			Rprintf("\nInitialisation started\n\n\n");
 			initialise_inpainting(imgInpaint,occInpaint,featuresPyramid,shiftMap,patchMatchParams);
 			patchMatchParams->partialComparison = 0;
-			printf("\nInitialisation finished\n\n\n");
+			Rprintf("\nInitialisation finished\n\n\n");
 			
 			if (featuresPyramid.nLevels >= 0)	//retrieve features from the pointers in the patchMatch parameters
 			{
@@ -308,7 +310,7 @@ patchMatchParameterStruct *patchMatchParams, inpaintingParameterStruct *inpainti
 				reconstruct_image(imgInpaint,occInpaint,shiftMap,SIGMA_COLOUR);
 			residual = calculate_residual(imgInpaint,imgPrevious,occInpaint);
 			if (patchMatchParams->verboseMode == true)
-				printf("Iteration number %d, residual = %f\n",iterationNb,residual);
+				Rprintf("Iteration number %d, residual = %f\n",iterationNb,residual);
 			iterationNb++;
 		}
 		//upsample shift volume, if we are not on the finest level
@@ -352,7 +354,7 @@ patchMatchParameterStruct *patchMatchParams, inpaintingParameterStruct *inpainti
 	delete_feature_pyramid(featuresPyramid);
 	delete patchMatchParams;
 	
-	printf("Inpainting finished !\n");
+	Rprintf("Inpainting finished !\n");
 
 	return(imgOut);
 }
@@ -437,7 +439,7 @@ void initialise_inpainting(nTupleImage *imgIn, nTupleImage *occIn, featurePyrami
 		
 		iterNb++;
 		if (patchMatchParams->verboseMode == true)
-			printf("\n Initialisation iteration number : %d \n",iterNb);
+			Rprintf("\n Initialisation iteration number : %d \n",iterNb);
 		delete occPatchMatch;
 		delete occReconstruct;
 		

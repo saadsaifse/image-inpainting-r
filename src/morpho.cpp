@@ -14,6 +14,8 @@
 //definitions for the morphological operations
 
 #include "morpho.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 nTupleImage* create_structuring_element(const char * structType, int xSize, int ySize)
 {
@@ -39,7 +41,7 @@ nTupleImage* create_structuring_element(const char * structType, int xSize, int 
 	}
 	else
 	{
-		MY_PRINTF("Error in create_structuring_element. The structuring element type is not recognised.\n");
+		Rprintf("Error in create_structuring_element. The structuring element type is not recognised.\n");
 		return NULL;
 	}
 

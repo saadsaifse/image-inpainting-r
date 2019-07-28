@@ -15,6 +15,8 @@
 //this function defines the patch match measure with which we compare patches
 
 #include "patch_match_measure.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 float ssd_patch_measure(nTupleImage *imgA, nTupleImage *imgB, nTupleImage *occIn, int xA, int yA,
 int xB, int yB, float minVal, const patchMatchParameterStruct *params)
@@ -31,7 +33,7 @@ int xB, int yB, float minVal, const patchMatchParameterStruct *params)
 
 	if ( ((imgA->patchSizeX) != (imgB->patchSizeX)) || ((imgA->patchSizeY) != (imgB->patchSizeY)) )
 	{
-		MY_PRINTF("Error in ssd_minimum_value, the patch sizes are not equal.\n");
+		Rprintf("Error in ssd_minimum_value, the patch sizes are not equal.\n");
 		return -1;
 	}
 

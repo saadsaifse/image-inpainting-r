@@ -15,6 +15,8 @@
 showing the nearest neighbours of patches*/
 
 #include "reconstruct_image.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 /*this function calculates a nearest neighbour field, from imgA to imgB*/
 void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,
@@ -48,12 +50,12 @@ void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,
 	/*check certain parameters*/
 	if( (imgIn->patchSizeX != (imgIn->patchSizeX)) || (imgIn->patchSizeY != (imgIn->patchSizeY)) )	/*check that the patch sizes are equal*/
 	{
-		MY_PRINTF("Error in estimate_colour, the size of the patches are not equal in the two image volumes.");
+		Rprintf("Error in estimate_colour, the size of the patches are not equal in the two image volumes.");
 		return;
 	}
 	if ( ( imgIn->patchSizeX > imgIn->xSize) || ( imgIn->patchSizeY > imgIn->ySize) )	/*check that the patch size is less or equal to each dimension in the images*/
 	{
-		MY_PRINTF("Error in estimate_colour, the patch size is to large for one or more of the dimensions of the image volume.");
+		Rprintf("Error in estimate_colour, the patch size is to large for one or more of the dimensions of the image volume.");
 		return;
 	}
 
@@ -98,8 +100,8 @@ void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,
                 jMax = min_int(j + hPatchSizeY,(imgIn->ySize)-1 );
                 
                 /*
-                MY_PRINTF("iMin : %d, iMax : %d\n",iMin,iMax);
-                MY_PRINTF("jMin : %d, jMax : %d\n",jMin,jMax);*/
+                Rprintf("iMin : %d, iMax : %d\n",iMin,iMax);
+                Rprintf("jMin : %d, jMax : %d\n",jMin,jMax);*/
                 /*first calculate the weights*/
                 for (int jj=jMin; jj<=jMax;jj++)
                     for (int ii=iMin; ii<=iMax;ii++)
@@ -166,7 +168,7 @@ void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,
                 adaptiveSigma = get_adaptive_sigma(weights,(imgIn->patchSizeX)*(imgIn->patchSizeY),sigmaColour);
 				adaptiveSigma = max_float(adaptiveSigma,(float)0.1);
                 
-                /* ///MY_PRINTF("alpha : %f\n",alpha);
+                /* ///Rprintf("alpha : %f\n",alpha);
                 //adjust the weights : note, the indices which are outside the image boundaries
                 //will have no influence on the final weights (they are initialised to 0)  */
                 for (int jj=jMin; jj<=jMax;jj++)
@@ -234,7 +236,7 @@ void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,
                                  continue;
                         }
                     }
-                     /*MY_PRINTF("SumWeights : %f\n",sumWeights);*/
+                     /*Rprintf("SumWeights : %f\n",sumWeights);*/
                 for (int colourInd=0; colourInd<(imgIn->nTupleSize); colourInd++)
 				{
 					imgIn->set_value(i,j,colourInd,(imageDataType)((avgColours[colourInd])/(sumWeights)));

@@ -6,9 +6,12 @@ Date: 2019-07-26
 Author: Muhammad Saad Saif
 Maintainer: Muhammad Saad Saif <msaif@uni-muenster.de>
 Description: Interfaces with an advanced Image Inpainting C++ library using Rcpp.
+Depends: 
+  R (>= 2.15.0),
+  imager,
 License: GPL (>= 2)
 Imports: 
   Rcpp (>= 1.0.1),
-  imager
+  imager,
 LinkingTo: Rcpp
-
+RoxygenNote: 6.1.1

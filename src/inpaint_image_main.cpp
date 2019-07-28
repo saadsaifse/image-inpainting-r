@@ -152,7 +152,7 @@ List image_inpaint(std::string fileInS, std::string fileInOccS, std::string file
   
   float timeTaken = fabs(difftime(startTime,stopTime));
   
-  printf("\n\nTotal execution time: %f\n",timeTaken);
+  //printf("\n\nTotal execution time: %f\n",timeTaken);
   
   return List::create(Named("isSuccessful") = LogicalVector::create(1),
                      Named("timeTaken") = timeTaken,

@@ -2,6 +2,6 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 image_inpaint <- function(fileInS, fileInOccS, fileOutS, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode) {
-    .Call(`_imageInpainting_image_inpaint`, fileInS, fileInOccS, fileOutS, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
+    .Call('_imageInpainting_image_inpaint', PACKAGE = 'imageInpainting', fileInS, fileInOccS, fileOutS, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
 }
 

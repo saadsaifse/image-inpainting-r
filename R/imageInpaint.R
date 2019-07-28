@@ -1,4 +1,4 @@
-#' @title Apply image inpainting to the input image.
+#' @title Apply image inpainting algorithm to the input images.
 #' @description An implementation of the "Image Inpainting" algorithm explained at <http://www.ipol.im/pub/art/2017/189/>. 
 #' @param fileIn Input image path.
 #' @param fileOcc Image path with the occlusion. 
@@ -10,6 +10,7 @@
 #' @param verboseMode Verbose mode.
 #' @return as list containing time taken and path of the output image.
 #' @export
+
 
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
   startTime <- Sys.time()
@@ -42,7 +43,6 @@ print.inpainting <- function(x, ...){
 
 #' @export
 plot.inpainting <- function(x, ...){
-  library(imager)
   layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
   
   outputImage <- load.image(x$fileOut)
@@ -55,6 +55,7 @@ plot.inpainting <- function(x, ...){
 }
 
 summary.inpainting <- function(x){
+  stopifnot(inherits(x, "inpainting"))
   cat(sep = "\n")
   cat("-----  Image inpainting summary  -----", sep = "\n")
   cat(sprintf("  Started at : %s", x$startTime), sep="\n")

@@ -14,6 +14,8 @@
 //this functions holds the definitions for the image_structures used in the spatio-temporal patchMatch
 
 #include "image_structures.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 float min_float(float a, float b)
 {
@@ -52,7 +54,12 @@ float rand_float_range(float a, float b)
 	if (a == b)
 		return a;
 	else
-		return ((b-a)*((float)rand()/RAND_MAX))+a;
+	{
+		GetRNGstate();
+		float ret = ((b-a)*((float)unif_rand()/RAND_MAX))+a;
+		PutRNGstate();
+		return ret;
+	}
 }
 
 int rand_int_range(int a, int b)
@@ -60,7 +67,12 @@ int rand_int_range(int a, int b)
 	if (a == b)
 		return a;
 	else
-		return ( rand()%(b-a+1) + a);
+	{
+		GetRNGstate();
+		int rand = (int)unif_rand();
+		PutRNGstate();
+		return (rand%(b-a+1) + a);		
+	}
 }
 
 float round_float(float a)
@@ -111,7 +123,7 @@ int sub_to_ind(nTupleImage* imgIn, int x, int y)
     	return( x*(imgIn->ySize) + y);
 	else
 	{
-		MY_PRINTF("Here sub_to_ind (image_structures.cpp). Error: unknown image indexing type\n.");
+		Rprintf("Here sub_to_ind (image_structures.cpp). Error: unknown image indexing type\n.");
 		return(-1);
 	}
 }
@@ -132,7 +144,7 @@ void ind_to_sub(nTupleImage* imgIn, int linearIndex, int *x, int *y)
 	}
 	else
 	{
-		MY_PRINTF("Here ind_to_sub (image_structures.cpp). Error: unknown image indexing type\n.");
+		Rprintf("Here ind_to_sub (image_structures.cpp). Error: unknown image indexing type\n.");
 	}
 }
 
@@ -150,15 +162,15 @@ void patch_index_to_sub(nTupleImage *imgIn, int patchIndex, int *colourInd,int *
 
 void show_patch_match_parameters(patchMatchParameterStruct *patchMatchParams)
 {
-	MY_PRINTF("Patch size x : %d\n", patchMatchParams->patchSizeX);
-	MY_PRINTF("Patch size y : %d\n", patchMatchParams->patchSizeY);
-	MY_PRINTF("nIters : %d\n", patchMatchParams->nIters);
-	MY_PRINTF("w : %d\n", patchMatchParams->w);
-	MY_PRINTF("alpha : %f\n", patchMatchParams->alpha);
-	MY_PRINTF("partialComparison : %d\n", patchMatchParams->partialComparison);
-    MY_PRINTF("fullSearch : %d\n", patchMatchParams->fullSearch);
+	Rprintf("Patch size x : %d\n", patchMatchParams->patchSizeX);
+	Rprintf("Patch size y : %d\n", patchMatchParams->patchSizeY);
+	Rprintf("nIters : %d\n", patchMatchParams->nIters);
+	Rprintf("w : %d\n", patchMatchParams->w);
+	Rprintf("alpha : %f\n", patchMatchParams->alpha);
+	Rprintf("partialComparison : %d\n", patchMatchParams->partialComparison);
+    Rprintf("fullSearch : %d\n", patchMatchParams->fullSearch);
     
-    MY_PRINTF("\n");
+    Rprintf("\n");
 }
 
 int check_patch_match_parameters(patchMatchParameterStruct *patchMatchParams)
@@ -168,14 +180,14 @@ int check_patch_match_parameters(patchMatchParameterStruct *patchMatchParams)
 		 (patchMatchParams->nIters <0) || (patchMatchParams->w <0) ||
 		 (patchMatchParams->alpha <0) )
 	{
-		printf("Error, the parameters should be positive.\n");
+		Rprintf("Error, the parameters should be positive.\n");
 		return(-1);
 	}
 	 
 	//verify that the patch sizes are odd
 	if( ( (patchMatchParams->patchSizeX)%2 == 0) || ( (patchMatchParams->patchSizeY)%2 == 0) )
 	{
-		printf("Error, the parameters should be odd.\n");
+		Rprintf("Error, the parameters should be odd.\n");
 		return(-1);
 	}
 	return(1);
@@ -278,7 +290,7 @@ nTupleImage::nTupleImage(int xSizeIn, int ySizeIn, int nTupleSizeIn, int indexin
     }
     else
     {
-        MY_PRINTF("Unknown indexing : %d\n", indexingIn);
+        Rprintf("Unknown indexing : %d\n", indexingIn);
     }
 
 	nElsTotal = (xSize)*(ySize);
@@ -321,7 +333,7 @@ nTupleImage::nTupleImage(int xSizeIn, int ySizeIn, int nTupleSizeIn,
     }
     else
     {
-        MY_PRINTF("Unknown indexing : %d\n", indexingIn);
+        Rprintf("Unknown indexing : %d\n", indexingIn);
     }
 
 	nElsTotal = (xSize)*(ySize);
@@ -364,7 +376,7 @@ nTupleImage::nTupleImage(int xSizeIn, int ySizeIn, int nTupleSizeIn,
     }
     else
     {
-        MY_PRINTF("Unknown indexing : %d\n", indexingIn);
+        Rprintf("Unknown indexing : %d\n", indexingIn);
     }
 
 	nElsTotal = (xSize)*(ySize);
@@ -389,9 +401,9 @@ imageDataType nTupleImage::get_value(int x, int y, int c)
 	//check parameters
 	if( (x<0) || (y<0) || (c<0) || (x>=xSize) || (y>=ySize) || (c>=nTupleSize))
 	{
-		MY_PRINTF("Error, in get_value. At least one of the indices is incorrect.\n");
-		MY_PRINTF(" x = %d \n y = %d\n c = %d\n",x,y,c);
-		MY_PRINTF("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
+		Rprintf("Error, in get_value. At least one of the indices is incorrect.\n");
+		Rprintf(" x = %d \n y = %d\n c = %d\n",x,y,c);
+		Rprintf("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
 		return(-1);
 	}
     return( values[ (x*(nX)) + (y*(nY)) + c*(nC)] );
@@ -402,9 +414,9 @@ imageDataType* nTupleImage::get_value_ptr(int x, int y, int c)
 	//check parameters
 	if( (x<0) || (y<0) || (c<0) || (x>=xSize) || (y>=ySize) || (c>=nTupleSize))
 	{
-		MY_PRINTF("Error, in get_value_nTuple_volume. At least one of the indices is incorrect.\n");
-		MY_PRINTF(" x = %d \n y = %d\n c = %d\n",x,y,c);
-		MY_PRINTF("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
+		Rprintf("Error, in get_value_nTuple_volume. At least one of the indices is incorrect.\n");
+		Rprintf(" x = %d \n y = %d\n c = %d\n",x,y,c);
+		Rprintf("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
 		return(NULL);
 	}
 	return( (values) + (  (y*(nY)) + (x*(nX)) + c*(nC) ) );
@@ -420,9 +432,9 @@ void nTupleImage::set_value(int x, int y, int c, imageDataType value)
 	//check parameters
 	if( (x<0) || (y<0) || (c<0) || (x>=xSize) || (y>=ySize) || (c>=nTupleSize))
 	{
-		MY_PRINTF("Error, at least one of the indices is incorrect.\n");
-		MY_PRINTF("x = %d \n y = %d\n c = %d\n",x,y,c);
-		MY_PRINTF("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
+		Rprintf("Error, at least one of the indices is incorrect.\n");
+		Rprintf("x = %d \n y = %d\n c = %d\n",x,y,c);
+		Rprintf("xSize : %d, ySize : %d, nTupleSize : %d\n\n",xSize,ySize,nTupleSize);
 	}
 	values[ (x*(nX)) + (y*(nY)) + c*(nC)] = value;
 }
@@ -535,9 +547,9 @@ void nTupleImage::binarise()
 
 void nTupleImage::display_attributes()
 {
-	MY_PRINTF("xSize : %d, ySize : %d, nTupleSize : %d\n",xSize,ySize,nTupleSize);
-	MY_PRINTF("patchSizeX : %d, patchSizeY : %d\n",patchSizeX,patchSizeY);
-	MY_PRINTF("max value : %f, min value : %f\n\n",this->max_value(),this->min_value());
+	Rprintf("xSize : %d, ySize : %d, nTupleSize : %d\n",xSize,ySize,nTupleSize);
+	Rprintf("patchSizeX : %d, patchSizeY : %d\n",patchSizeX,patchSizeY);
+	Rprintf("max value : %f, min value : %f\n\n",this->max_value(),this->min_value());
 }
 
 void clamp_coordinates(nTupleImage* imgIn, int *x, int *y)
@@ -550,7 +562,7 @@ void copy_pixel_values_nTuple_image(nTupleImage *imgA, nTupleImage *imgB, int xA
 {
 	if(imgA->nTupleSize != imgB->nTupleSize)
 	{
-		MY_PRINTF("Here copy_pixel_values_nTuple_image. Error, the images do not have the same number of channels.\n");
+		Rprintf("Here copy_pixel_values_nTuple_image. Error, the images do not have the same number of channels.\n");
 	}
 	
 	for (int c=0; c<imgA->nTupleSize; c++)

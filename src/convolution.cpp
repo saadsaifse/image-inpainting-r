@@ -1,6 +1,8 @@
 
 
 #include "convolution.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 
 nTupleImage * create_convolution_kernel(const char * kernelType, int xSizeKernel, int ySizeKernel, float stdDev)
@@ -27,7 +29,7 @@ nTupleImage * create_convolution_kernel(const char * kernelType, int xSizeKernel
 	}
 	else
 	{
-		MY_PRINTF("Here create_convolution_kernel. The convolution kernel type is unrecognised.\n");
+		Rprintf("Here create_convolution_kernel. The convolution kernel type is unrecognised.\n");
 	}
 	
 	return(convKernel);

@@ -16,6 +16,8 @@
 
 
 #include "patch_match_tools.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 //check if the displacement values have already been used
 bool check_already_used_patch( nTupleImage *shiftMap, int x, int y, int dispX, int dispY)
@@ -112,16 +114,16 @@ int check_disp_field(nTupleImage *shiftMap, nTupleImage *departImage, nTupleImag
 
 			if ( check_in_inner_boundaries(arrivalImage, xB, yB, params) == 0)
 			{
-				MY_PRINTF("Error, the displacement is incorrect.\n");
-				MY_PRINTF("xA : %d\n yA : %d\n",i,j);
-				MY_PRINTF(" dispValX : %d\n dispValY : %d\n",dispValX,dispValY);
-				MY_PRINTF(" xB : %d\n yB : %d\n",xB,yB);
+				Rprintf("Error, the displacement is incorrect.\n");
+				Rprintf("xA : %d\n yA : %d\n",i,j);
+				Rprintf(" dispValX : %d\n dispValY : %d\n",dispValX,dispValY);
+				Rprintf(" xB : %d\n yB : %d\n",xB,yB);
 				returnVal= -1;
 			}
 			else if (check_is_occluded(occIn,xB,yB) == 1)
 			{
-				MY_PRINTF("Error, the displacement leads to an occluded pixel.\n");
-				MY_PRINTF(" xB : %d\n yB : %d\n",xB,yB);
+				Rprintf("Error, the displacement leads to an occluded pixel.\n");
+				Rprintf(" xB : %d\n yB : %d\n",xB,yB);
 				returnVal= -1;
 			}
 		}
@@ -171,7 +173,7 @@ void patch_match_full_search(nTupleImage *shiftMap, nTupleImage *imgA, nTupleIma
                 }
             if (bestX==FLT_MAX || bestY==FLT_MAX)
             {
-            	MY_PRINTF("Here patch_match_full_search. Error, a correct nearest neighbour was not found for the patch centred at :\nx:%d\ny:%d\n\n",i,j);
+            	Rprintf("Here patch_match_full_search. Error, a correct nearest neighbour was not found for the patch centred at :\nx:%d\ny:%d\n\n",i,j);
             }
             shiftMap->set_value(i,j,0,(imageDataType)bestX);
             shiftMap->set_value(i,j,1,(imageDataType)bestY);
@@ -245,7 +247,11 @@ void initialise_displacement_field(nTupleImage *shiftMap, nTupleImage *departIma
                 else{
                     if ( (shiftMap->get_value(i,j,0) == FLT_MAX) || (firstGuess->xSize == 0))  //default behaviour
                     {
-                        xDisp = ((rand()%( (arrivalImage->xSize) -2*hPatchSizeCeilX-1)) + hPatchSizeX)-i;
+						GetRNGstate();
+						int rand = (int)unif_rand();
+						PutRNGstate();
+
+                        xDisp = ((rand%( (arrivalImage->xSize) -2*hPatchSizeCeilX-1)) + hPatchSizeX)-i;
                     }
                     else    //based on an initial guess
                     {
@@ -259,7 +265,10 @@ void initialise_displacement_field(nTupleImage *shiftMap, nTupleImage *departIma
                 else{
                     if ( (shiftMap->get_value(i,j,1) == FLT_MAX) || (firstGuess->xSize == 0))  //default behaviour
                     {
-                        yDisp = ((rand()%( (arrivalImage->ySize) -2*hPatchSizeCeilY-1)) + hPatchSizeY)-j;
+						GetRNGstate();
+						int rand = (int)unif_rand();
+						PutRNGstate();
+                        yDisp = ((rand%( (arrivalImage->ySize) -2*hPatchSizeCeilY-1)) + hPatchSizeY)-j;
                     }
                     else    //based on an initial guess
                     {
@@ -438,7 +447,7 @@ void patch_match_propagation_patch_level(nTupleImage *shiftMap, nTupleImage *dep
 			copy_pixel_values_nTuple_image(shiftMap,shiftMap, i, min_int(j+1,((int)shiftMap->ySize)-1), i, j);
 		}
 		else
-			MY_PRINTF("Error, correct ind not chosen\n.");
+			Rprintf("Error, correct ind not chosen\n.");
 		//now calculate the error of the patch matching
 		currentError = calclulate_patch_error(departImage,arrivalImage,shiftMap,occIn,i,j, -1,params);
 		shiftMap->set_value(i,j,2,currentError);
@@ -453,7 +462,7 @@ void patch_match_propagation_patch_level(nTupleImage *shiftMap, nTupleImage *dep
 			copy_pixel_values_nTuple_image(shiftMap,shiftMap, i, max_int(j-1,0), i, j);
 		}
 		else
-			MY_PRINTF("Error, correct ind not chosen\n.");
+			Rprintf("Error, correct ind not chosen\n.");
 		//now calculate the error of the patch matching
 		currentError = calclulate_patch_error(departImage,arrivalImage,shiftMap,occIn,i,j, -1,params);
 		shiftMap->set_value(i,j,2,currentError);
@@ -512,7 +521,7 @@ float get_min_correct_error(nTupleImage *shiftMap,nTupleImage *departImage,nTupl
 							*correctInd = 1;
 						break;
 					default :
-						MY_PRINTF("Error in get_min_correct_error. The index i : %d is above N_DIMS.\n",i);
+						Rprintf("Error in get_min_correct_error. The index i : %d is above N_DIMS.\n",i);
 				}
 			}
 
@@ -549,7 +558,7 @@ float get_min_correct_error(nTupleImage *shiftMap,nTupleImage *departImage,nTupl
 							*correctInd = 1;
 						break;
 					default :
-						MY_PRINTF("Error in get_min_correct_error. The index i : %d is above N_DIMS.\n",i);
+						Rprintf("Error in get_min_correct_error. The index i : %d is above N_DIMS.\n",i);
 				}
 			}
 

@@ -17,10 +17,12 @@
  */
 
 #include "image_operations.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 void seed_random_numbers( double inputSeed)
 {
- 	srand ( (unsigned int)inputSeed );   //create random number seed
+ 	//srand ( (unsigned int)inputSeed );   //create random number seed
 }
 
 std::string remove_extension_from_file(const char* fileIn)
@@ -46,13 +48,13 @@ float * read_image(const char *fileIn, size_t *nx, size_t *ny, size_t *nc)
 
 	if (pixel_stream == NULL)
 	{
-		printf("Unable to get the image\n");
+		Rprintf("Unable to get the image\n");
 		return(NULL);
 	}
 	
-	printf("xSize : %d\n",(int)*nx);
-	printf("ySize : %d\n",(int)*ny);
-	printf("nChannels : %d\n",(int)*nc);
+	Rprintf("xSize : %d\n",(int)*nx);
+	Rprintf("ySize : %d\n",(int)*ny);
+	Rprintf("nChannels : %d\n",(int)*nc);
 	
 	return(pixel_stream);
 }
@@ -152,7 +154,7 @@ void write_image(nTupleImage *imgIn, const char *fileName, imageDataType normali
 			  imgInCopy->xSize, imgInCopy->ySize, imgInCopy->nTupleSize);
 			if (readWriteSuccess == -1)
 			{
-				printf("Unable to write the image\n");
+				Rprintf("Unable to write the image\n");
 				delete imgInCopy;
 				return;
 			}
@@ -164,7 +166,7 @@ void write_image(nTupleImage *imgIn, const char *fileName, imageDataType normali
 			  imgIn->xSize, imgIn->ySize, imgIn->nTupleSize);
 			if (readWriteSuccess == -1)
 			{
-				printf("Unable to write the image\n");
+				Rprintf("Unable to write the image\n");
 				return;
 			}
 		}
@@ -240,7 +242,7 @@ void write_shift_map(nTupleImage *shiftMap, const char *fileName)
 	              shiftMapColour->xSize, shiftMapColour->ySize, shiftMapColour->nTupleSize);
 	if (readWriteSuccess == -1)
 	{
-		printf("Unable to write the image\n");
+		Rprintf("Unable to write the image\n");
 		delete colourWheel;
 		delete shiftMapColour;
 		return;
@@ -278,7 +280,7 @@ void write_image_pyramid(nTupleImagePyramid imgInPyramid, int nLevels, char *fil
 		              currImg->xSize, currImg->ySize, currImg->nTupleSize);
 		if (readWriteSuccess == -1)
 		{
-			printf("Unable to write the image\n");
+			Rprintf("Unable to write the image\n");
 			return;
 		}
 	}

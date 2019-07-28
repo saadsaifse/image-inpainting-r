@@ -16,6 +16,8 @@ colour estimation*/
 
 
 #include "reconstruct_image_tools.h"
+#include <Rcpp.h>
+using namespace Rcpp;
 
 int check_shift_map(nTupleImage *shiftMap, nTupleImage *departImage, nTupleImage *arrivalImage)
 {
@@ -35,8 +37,8 @@ int check_shift_map(nTupleImage *shiftMap, nTupleImage *departImage, nTupleImage
 
 			/*if ( (fabs(dispValX) > w) || (fabs(dispValY) > w))
 			{
-				MY_PRINTF("Error, the displacement is greater than the minimum value w : %d.\n",w);
-				MY_PRINTF(" dispValX : %d\n dispValY : %d\n dispValT : %d\n",dispValX,dispValY,dispValT);
+				Rprintf("Error, the displacement is greater than the minimum value w : %d.\n",w);
+				Rprintf(" dispValX : %d\n dispValY : %d\n dispValT : %d\n",dispValX,dispValY,dispValT);
 				returnVal= -1;
 			}*/
 
@@ -46,16 +48,16 @@ int check_shift_map(nTupleImage *shiftMap, nTupleImage *departImage, nTupleImage
 			if ( (xB <hPatchSizeX) || (yB <hPatchSizeY) || 
 				(xB >= (arrivalImage->xSize - hPatchSizeX)) || (yB >= (arrivalImage->ySize - hPatchSizeY)) )
 			{
-				MY_PRINTF("Error, the displacement is incorrect.\n");
-				MY_PRINTF("xA : %d\n yA : %d\n",i,j);
-				MY_PRINTF(" dispValX : %d\n dispValY : %d\n",dispValX,dispValY);
-				MY_PRINTF(" xB : %d\n yB : %d\n",xB,yB);
+				Rprintf("Error, the displacement is incorrect.\n");
+				Rprintf("xA : %d\n yA : %d\n",i,j);
+				Rprintf(" dispValX : %d\n dispValY : %d\n",dispValX,dispValY);
+				Rprintf(" xB : %d\n yB : %d\n",xB,yB);
 				returnVal= -1;
 			}
 			/*else if (check_is_occluded(occVol,xB,yB) == 1)
 			{
-				MY_PRINTF("Error, the displacement leads to an occluded pixel.\n");
-				MY_PRINTF(" xB : %d\n yB : %d\n",xB,yB);
+				Rprintf("Error, the displacement leads to an occluded pixel.\n");
+				Rprintf(" xB : %d\n yB : %d\n",xB,yB);
 				returnVal= -1;
 			}*/
 		}
