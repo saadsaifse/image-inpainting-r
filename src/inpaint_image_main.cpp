@@ -154,7 +154,7 @@ List image_inpaint(std::string fileInS, std::string fileInOccS, std::string file
   
   printf("\n\nTotal execution time: %f\n",timeTaken);
   
-  return List::create(Named("result") = "success",
+  return List::create(Named("isSuccessful") = LogicalVector::create(1),
                      Named("timeTaken") = timeTaken,
                      Named("outputFilePath") = fileOutS,
                      Named("inputFilePath") = fileInS,
