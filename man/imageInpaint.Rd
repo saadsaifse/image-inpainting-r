@@ -10,6 +10,8 @@ imageInpaint(fileIn, fileInOcc, fileOut, patchSizeX = 7L,
 \arguments{
 \item{fileIn}{Input image path.}
 
+\item{fileInOcc}{Image path with the occlusion.}
+
 \item{fileOut}{Output image path after application of image inpainting.}
 
 \item{patchSizeX}{Size of X patch.}
@@ -21,8 +23,6 @@ imageInpaint(fileIn, fileInOcc, fileOut, patchSizeX = 7L,
 \item{useFeatures}{Use features.}
 
 \item{verboseMode}{Verbose mode.}
-
-\item{fileOcc}{Image path with the occlusion.}
 }
 \value{
 as list containing time taken and path of the output image.

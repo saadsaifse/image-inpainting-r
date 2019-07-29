@@ -1,7 +1,7 @@
 #' @title Apply image inpainting algorithm to the input images.
 #' @description An implementation of the "Image Inpainting" algorithm explained at <http://www.ipol.im/pub/art/2017/189/>. 
 #' @param fileIn Input image path.
-#' @param fileOcc Image path with the occlusion. 
+#' @param fileInOcc Image path with the occlusion. 
 #' @param fileOut Output image path after application of image inpainting. 
 #' @param patchSizeX Size of X patch. 
 #' @param patchSizeY Size of Y patch.
@@ -45,9 +45,9 @@ print.inpainting <- function(x, ...){
 plot.inpainting <- function(x, ...){
   layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
   
-  outputImage <- load.image(x$fileOut)
-  inputImage <- load.image(x$fileIn)
-  occlusionImage <- load.image(x$fileInOcc)
+  outputImage <- imager::load.image(x$fileOut)
+  inputImage <- imager::load.image(x$fileIn)
+  occlusionImage <- imager::load.image(x$fileInOcc)
   
   plot(outputImage, main = "Inpainted image")
   plot(inputImage, main = "Input image")
