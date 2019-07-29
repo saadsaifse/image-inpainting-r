@@ -10,8 +10,6 @@
 #' @param verboseMode Verbose mode.
 #' @return as list containing time taken and path of the output image.
 #' @export
-
-
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
   startTime <- Sys.time()
   output <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
@@ -24,8 +22,6 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
 
 createImageInpaintObject <- function(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels,
                                      useFeatures, verboseMode, startTime, endTime, isSuccessful){
-  #a shorter way to create a list with all the arguments of a function
-  #obj <- as.list(match.call())
   obj <- list(fileIn = fileIn, fileInOcc = fileInOcc, fileOut = fileOut, patchSizeX=patchSizeX, patchSizeY= patchSizeY, nLevels=nLevels,
               useFeatures = useFeatures, verboseMode = verboseMode, startTime = startTime, endTime = endTime, isSuccessful = isSuccessful)
   obj$timeTaken <- endTime - startTime
@@ -37,7 +33,7 @@ print.inpainting <- function(x, ...){
   cat(sep = "\n")
   cat("Image inpainting result", sep = "\n")
   cat(sprintf("  Result : %s", ifelse(x$isSuccessful, 'success', 'fail')), sep = "\n")
-  cat(sprintf("  Total time taken (sec) : %s", x$timeTaken), sep = "\n")
+  cat(sprintf("  Total time taken (sec) : %s", round(x$timeTaken, digits = 2)), sep = "\n")
   cat(sprintf("  Output image path : %s", x$fileOut), sep = "\n")
 }
 
@@ -54,22 +50,19 @@ plot.inpainting <- function(x, ...){
   plot(occlusionImage, main = "Occlusion input image")
 }
 
+#' @export
 summary.inpainting <- function(x){
   stopifnot(inherits(x, "inpainting"))
-  cat(sep = "\n")
-  cat("-----  Image inpainting summary  -----", sep = "\n")
-  cat(sprintf("  Started at : %s", x$startTime), sep="\n")
-  cat(sprintf("  Finished at : %s", x$endTime), sep="\n")
-  cat(sprintf("  Total time taken (sec) : %s", x$timeTaken), sep = "\n")
-  cat(sprintf("  Result : %s", ifelse(x$isSuccessful, 'success', 'fail')), sep = "\n")
-  cat(sprintf("  Input image path : %s", x$fileIn), sep = "\n")
-  cat(sprintf("  Input occlusion image path : %s", x$fileInOcc), sep = "\n")
-  cat(sprintf("  Output image path : %s", x$fileOut), sep = "\n")
-  cat(sprintf("  patchSizeX : %i", x$patchSizeX), sep = "\n")
-  cat(sprintf("  patchSizeY : %i", x$patchSizeY), sep = "\n")
-  cat(sprintf("  Number of Levels : %i", x$nLevels), sep = "\n")
-  cat(sprintf("  Use Features : %i", x$useFeatures), sep = "\n")
-  cat(sprintf("  Verbose mode : %i", x$verboseMode), sep = "\n")
-  cat(sprintf("-----  End of summary  -----"), sep = "\n")
+
+  result <- ifelse(x$isSuccessful, 'success', 'fail')
+  startTime <- format(x$startTime, "%X, %b %d %Y %Z")
+  endTime <- format(x$endTime, "%X, %b %d %Y %Z")
+  output = matrix(c(startTime, endTime, round(x$timeTaken, digits = 2), result, x$fileIn, x$fileInOcc, x$fileOut, x$patchSizeX, x$patchSizeY,
+                     x$nLevels, x$useFeatures, x$verboseMode), ncol = 1)
+  rownames(output) = c("Start time", "End time", "Time taken (sec)", "Result", "Input image path", "Input occlusion image path", "Output iamge path"
+                       , "Patch size X", "Patch size Y", "No. of levels", "Use features", "Verbose mode");
+  colnames(output) = "value"
+  
+  return(output)
 }
 
