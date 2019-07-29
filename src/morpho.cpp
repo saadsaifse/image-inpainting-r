@@ -15,7 +15,6 @@
 
 #include "morpho.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 nTupleImage* create_structuring_element(const char * structType, int xSize, int ySize)
 {

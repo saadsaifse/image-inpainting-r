@@ -247,11 +247,7 @@ void initialise_displacement_field(nTupleImage *shiftMap, nTupleImage *departIma
                 else{
                     if ( (shiftMap->get_value(i,j,0) == FLT_MAX) || (firstGuess->xSize == 0))  //default behaviour
                     {
-						GetRNGstate();
-						int rand = (int)unif_rand();
-						PutRNGstate();
-
-                        xDisp = ((rand%( (arrivalImage->xSize) -2*hPatchSizeCeilX-1)) + hPatchSizeX)-i;
+                        xDisp = (((int)R::runif(0,(int)RAND_MAX)%( (arrivalImage->xSize) -2*hPatchSizeCeilX-1)) + hPatchSizeX)-i;
                     }
                     else    //based on an initial guess
                     {
@@ -265,10 +261,7 @@ void initialise_displacement_field(nTupleImage *shiftMap, nTupleImage *departIma
                 else{
                     if ( (shiftMap->get_value(i,j,1) == FLT_MAX) || (firstGuess->xSize == 0))  //default behaviour
                     {
-						GetRNGstate();
-						int rand = (int)unif_rand();
-						PutRNGstate();
-                        yDisp = ((rand%( (arrivalImage->ySize) -2*hPatchSizeCeilY-1)) + hPatchSizeY)-j;
+                        yDisp = (((int)R::runif(0,(int)RAND_MAX)%( (arrivalImage->ySize) -2*hPatchSizeCeilY-1)) + hPatchSizeY)-j;
                     }
                     else    //based on an initial guess
                     {

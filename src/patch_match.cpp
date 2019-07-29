@@ -16,7 +16,6 @@
 
 #include "patch_match.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 //this function calculates a nearest neighbour field, from imgA to imgB
 void patch_match_ANN(nTupleImage *imgA, nTupleImage *imgB, 

@@ -61,7 +61,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <assert.h>
+ #include <assert.h>
 
 /* option to use a local version of the libpng */
 #ifdef _LOCAL_LIBS
@@ -493,8 +493,10 @@ static int write_png_abort(FILE * fp,
         free(row_pointers);
     if (NULL != idata)
         free(idata);
+    //Rcpp doesn't allow to use stdout
     //if (NULL != fp && stdout != fp)
-    //    (void) fclose(fp);
+    if (NULL != fp)
+        (void) fclose(fp);
     return -1;
 }
 
@@ -541,9 +543,10 @@ static int write_png_raw(const char *fname, const void *data,
         return -1;
 
     /* open the PNG output file */
+    //Rcpp doesn't allow to use stdout
     // if (0 == strcmp(fname, "-"))
-    //     fp = Rcpp::Rcout;
-    //else if (NULL == (fp = fopen(fname, "wb")))
+    //     fp = stdout;
+    // else if (NULL == (fp = fopen(fname, "wb")))
     if (NULL == (fp = fopen(fname, "wb")))
         return -1;
 

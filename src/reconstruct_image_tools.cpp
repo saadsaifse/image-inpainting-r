@@ -17,7 +17,6 @@ colour estimation*/
 
 #include "reconstruct_image_tools.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 int check_shift_map(nTupleImage *shiftMap, nTupleImage *departImage, nTupleImage *arrivalImage)
 {

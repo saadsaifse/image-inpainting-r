@@ -16,7 +16,6 @@
 
 #include "patch_match_measure.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 float ssd_patch_measure(nTupleImage *imgA, nTupleImage *imgB, nTupleImage *occIn, int xA, int yA,
 int xB, int yB, float minVal, const patchMatchParameterStruct *params)

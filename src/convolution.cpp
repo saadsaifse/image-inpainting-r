@@ -2,7 +2,6 @@
 
 #include "convolution.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 
 nTupleImage * create_convolution_kernel(const char * kernelType, int xSizeKernel, int ySizeKernel, float stdDev)

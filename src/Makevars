@@ -1,3 +1,2 @@
 CXX_STD = CXX11
-CXXOPT    = -O3 -ftree-vectorize -funroll-loops#
 PKG_LIBS = -lpng -ltiff

@@ -13,7 +13,6 @@
 
 #include "image_inpainting.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 patchMatchParameterStruct * initialise_patch_match_parameters(
 	int patchSizeX, int patchSizeY, int imgSizeX, int imgSizeY, bool verboseMode)

@@ -18,10 +18,13 @@
 
 #include "image_operations.h"
 #include <Rcpp.h>
+
 using namespace Rcpp;
 
 void seed_random_numbers( double inputSeed)
 {
+	//in order to use Rcpp
+	//set.seed((unsigned int)inputSeed);
  	//srand ( (unsigned int)inputSeed );   //create random number seed
 }
 

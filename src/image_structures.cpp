@@ -54,12 +54,8 @@ float rand_float_range(float a, float b)
 	if (a == b)
 		return a;
 	else
-	{
-		GetRNGstate();
-		float ret = ((b-a)*((float)unif_rand()/RAND_MAX))+a;
-		PutRNGstate();
-		return ret;
-	}
+		return ((b-a)*((float)R::runif(0,(int)RAND_MAX)/RAND_MAX))+a;
+		//return ((b-a)*((float)rand()/RAND_MAX))+a;
 }
 
 int rand_int_range(int a, int b)
@@ -67,12 +63,8 @@ int rand_int_range(int a, int b)
 	if (a == b)
 		return a;
 	else
-	{
-		GetRNGstate();
-		int rand = (int)unif_rand();
-		PutRNGstate();
-		return (rand%(b-a+1) + a);		
-	}
+		return ( ((int)R::runif(0,(int)RAND_MAX))%(b-a+1) + a);
+		//return ( rand()%(b-a+1) + a);
 }
 
 float round_float(float a)

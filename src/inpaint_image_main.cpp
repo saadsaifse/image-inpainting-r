@@ -128,8 +128,8 @@ using namespace Rcpp;
 // 		atoi(patchSizeX), atoi(patchSizeY), atoi(nLevels), (bool)atoi(useFeatures), (bool)atoi(verboseMode));
 // 	
 // 	time(&stopTime);
-// 	printf("\n\nTotal execution time: %f\n",fabs(difftime(startTime,stopTime)));
-// 	//MY_PRINTF("\n\nTotal execution time: %f\n",((double)(clock()-startTime)) / CLOCKS_PER_SEC);
+// 	Rprintf("\n\nTotal execution time: %f\n",fabs(difftime(startTime,stopTime)));
+// 	//Rprintf("\n\nTotal execution time: %f\n",((double)(clock()-startTime)) / CLOCKS_PER_SEC);
 // 
 // 	
 // 	return(0);
@@ -151,8 +151,6 @@ List image_inpaint(std::string fileInS, std::string fileInOccS, std::string file
   time(&stopTime);
   
   float timeTaken = fabs(difftime(startTime,stopTime));
-  
-  //printf("\n\nTotal execution time: %f\n",timeTaken);
   
   return List::create(Named("isSuccessful") = LogicalVector::create(1),
                      Named("timeTaken") = timeTaken,

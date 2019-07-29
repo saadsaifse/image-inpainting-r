@@ -16,7 +16,6 @@ showing the nearest neighbours of patches*/
 
 #include "reconstruct_image.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 /*this function calculates a nearest neighbour field, from imgA to imgB*/
 void reconstruct_image(nTupleImage* imgIn, nTupleImage* occIn,

@@ -16,7 +16,6 @@ showing the nearest neighbours of patches */
 
 #include "reconstruct_image_and_features.h"
 #include <Rcpp.h>
-using namespace Rcpp;
 
 void reconstruct_image_and_features(nTupleImage* imgIn, nTupleImage* occIn,
         nTupleImage *normGradX, nTupleImage *normGradY,
