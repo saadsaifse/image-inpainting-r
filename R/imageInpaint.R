@@ -51,14 +51,14 @@ plot.inpainting <- function(x, ...){
 }
 
 #' @export
-summary.inpainting <- function(x){
-  stopifnot(inherits(x, "inpainting"))
+summary.inpainting <- function(object, ...){
+  stopifnot(inherits(object, "inpainting"))
 
-  result <- ifelse(x$isSuccessful, 'success', 'fail')
-  startTime <- format(x$startTime, "%X, %b %d %Y %Z")
-  endTime <- format(x$endTime, "%X, %b %d %Y %Z")
-  output = matrix(c(startTime, endTime, round(x$timeTaken, digits = 2), result, x$fileIn, x$fileInOcc, x$fileOut, x$patchSizeX, x$patchSizeY,
-                     x$nLevels, x$useFeatures, x$verboseMode), ncol = 1)
+  result <- ifelse(object$isSuccessful, 'success', 'fail')
+  startTime <- format(object$startTime, "%X, %b %d %Y %Z")
+  endTime <- format(object$endTime, "%X, %b %d %Y %Z")
+  output = matrix(c(startTime, endTime, round(object$timeTaken, digits = 2), result, object$fileIn, object$fileInOcc, object$fileOut, object$patchSizeX, object$patchSizeY,
+                    object$nLevels, object$useFeatures, object$verboseMode), ncol = 1)
   rownames(output) = c("Start time", "End time", "Time taken (sec)", "Result", "Input image path", "Input occlusion image path", "Output iamge path"
                        , "Patch size X", "Patch size Y", "No. of levels", "Use features", "Verbose mode");
   colnames(output) = "value"
