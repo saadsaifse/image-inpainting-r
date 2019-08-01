@@ -11,6 +11,10 @@
 #' @return as list containing time taken and path of the output image.
 #' @export
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
+  
+  if (!file.verify(fileOut))
+    stop("Output file cannot be created")
+  
   startTime <- Sys.time()
   output <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
   endTime <- Sys.time()
@@ -66,3 +70,15 @@ summary.inpainting <- function(object, ...){
   return(output)
 }
 
+file.verify <- function(path) {
+  if (!assertthat::is.string(path))
+    stop("Incorrect path format")
+  
+  if (!file.exists(path)){
+    file.create(path)
+  }
+  else{
+    file.remove(path)
+  }
+  assertthat::is.writeable(path)
+}
