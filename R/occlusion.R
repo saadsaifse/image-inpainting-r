@@ -1,3 +1,7 @@
+#' @title Extracts occlusion regions from input, input occlusion and inpainted output images
+#' @description Takes inpaint object with input, input occlusion and inpainted output images. Creates a new occlusion class and returns the object. 
+#' @param object Inpaint class object
+#' @return List with occlusion class, containing three occluded regions
 #' @export
 extractOcclusionRegions <- function(object){
   if (!inherits(object, "inpaint"))
@@ -18,6 +22,10 @@ extractOcclusionRegions <- function(object){
   occlusionObject
 }
 
+#' @title Plots three occlusion regions
+#' @description Takes an occlusion class object and plots occlutions regions before and after inpainting.
+#' @param x Occlusion list object
+#' @param ... Base plot arguments
 #' @export
 plot.occlusion  <- function(x, ...){
   

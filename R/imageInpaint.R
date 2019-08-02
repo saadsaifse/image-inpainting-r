@@ -3,11 +3,11 @@
 #' @param fileIn Input image path.
 #' @param fileInOcc Image path with the occlusion. 
 #' @param fileOut Output image path after application of image inpainting. 
-#' @param patchSizeX Size of X patch. 
-#' @param patchSizeY Size of Y patch.
-#' @param nLevels Number of levels.
-#' @param useFeatures Use features.
-#' @param verboseMode Verbose mode.
+#' @param patchSizeX Size of X patch (3L-13L). 7L is most suitable for images between 512x512 to 800x800 pixels
+#' @param patchSizeY Size of Y patch (3L-13L). 7L is most suitable for images between 512x512 to 800x800 pixels
+#' @param nLevels Number of pyramidlevels (0-15). Defaults to automatic selection by the algorithm.
+#' @param useFeatures Use features. If enabled, the algorithm also matches the region's texture while inpainting
+#' @param verboseMode Enables or disables the verbose mode.
 #' @return as list containing time taken and path of the output image.
 #' @export
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
@@ -54,6 +54,9 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
   inpaintObject
 }
 
+#' @title Prints the inpaint object
+#' @param x Inpaint object
+#' @param ... Base print arguments
 #' @export
 print.inpaint <- function(x, ...){
   cat(sep = "\n")
@@ -63,6 +66,10 @@ print.inpaint <- function(x, ...){
   cat(sprintf("  Output image path : %s", x$imgOutPath), sep = "\n")
 }
 
+#' @title Plots three inpaint images
+#' @description Plots input, occlusion input and inpainted output images
+#' @param x Inpaint list object
+#' @param ... Base plot arguments
 #' @export
 plot.inpaint <- function(x, ...){
   layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
@@ -72,6 +79,10 @@ plot.inpaint <- function(x, ...){
   plot(x$imgInOcc, main = "Occlusion input image")
 }
 
+#' @title Summarizes inpaint object
+#' @description Provides summary of inpaint object in a tabular form. 
+#' @param object Inpaint list object
+#' @param ... Base summary arguments
 #' @export
 summary.inpaint <- function(object, ...){
   stopifnot(inherits(object, "inpaint"))

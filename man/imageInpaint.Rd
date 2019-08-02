@@ -14,15 +14,15 @@ imageInpaint(fileIn, fileInOcc, fileOut, patchSizeX = 7L,
 
 \item{fileOut}{Output image path after application of image inpainting.}
 
-\item{patchSizeX}{Size of X patch.}
+\item{patchSizeX}{Size of X patch (3L-13L). 7L is most suitable for images between 512x512 to 800x800 pixels}
 
-\item{patchSizeY}{Size of Y patch.}
+\item{patchSizeY}{Size of Y patch (3L-13L). 7L is most suitable for images between 512x512 to 800x800 pixels}
 
-\item{nLevels}{Number of levels.}
+\item{nLevels}{Number of pyramidlevels (0-15). Defaults to automatic selection by the algorithm.}
 
-\item{useFeatures}{Use features.}
+\item{useFeatures}{Use features. If enabled, the algorithm also matches the region's texture while inpainting}
 
-\item{verboseMode}{Verbose mode.}
+\item{verboseMode}{Enables or disables the verbose mode.}
 }
 \value{
 as list containing time taken and path of the output image.
