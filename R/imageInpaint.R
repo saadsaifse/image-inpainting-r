@@ -47,7 +47,7 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
     verboseMode = verboseMode,
     startTime =  format(startTime, "%X, %b %d %Y %Z"),
     endTime = format(endTime, "%X, %b %d %Y %Z"),
-    timeTaken = format(timeTaken, "%X, %b %d %Y %Z"),
+    timeTaken = timeTaken,
     isSuccessful = output$isSuccessful)
   
   class(inpaintObject) <- "inpaint"
