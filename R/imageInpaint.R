@@ -12,56 +12,72 @@
 #' @export
 imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY = 7L, nLevels = -1, useFeatures = 1, verboseMode = 0) {
   
-  if (!file.verify(fileOut))
-    stop("Output file cannot be created")
-  
-  startTime <- Sys.time()
-  output <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
-  endTime <- Sys.time()
-  imageInpaintObject <- createImageInpaintObject(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY,
-                                                nLevels, useFeatures, verboseMode, startTime, endTime, TRUE)
-  class(imageInpaintObject) <- "inpainting"
-  imageInpaintObject
-}
+  if (!file.exists(fileIn))
+    stop("Input image file not found")
 
-createImageInpaintObject <- function(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels,
-                                     useFeatures, verboseMode, startTime, endTime, isSuccessful){
-  obj <- list(fileIn = fileIn, fileInOcc = fileInOcc, fileOut = fileOut, patchSizeX=patchSizeX, patchSizeY= patchSizeY, nLevels=nLevels,
-              useFeatures = useFeatures, verboseMode = verboseMode, startTime = startTime, endTime = endTime, isSuccessful = isSuccessful)
-  obj$timeTaken <- endTime - startTime
-  obj
+  if (!file.exists(fileInOcc))
+    stop("Input occlusion file not found")
+  
+  file.verifyOutFile(fileOut)
+  
+  imgIn <- load.image(fileIn)
+  imgInOcc <- load.image(fileInOcc)
+
+  startTime <- Sys.time()
+  
+  output <- image_inpaint(fileIn, fileInOcc, fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode)
+  
+  endTime <- Sys.time()
+  
+  timeTaken <- endTime - startTime
+  
+  imgOut <- load.image(fileOut)
+  
+  inpaintObject <- list(
+    imgInPath = fileIn,
+    imgIn = imgIn,
+    imgInOccPath = fileInOcc,
+    imgInOcc = imgInOcc,
+    imgOutPath = fileOut,
+    imgOut = imgOut,
+    patchSizeX=patchSizeX,
+    patchSizeY= patchSizeY,
+    nLevels=nLevels,
+    useFeatures = useFeatures,
+    verboseMode = verboseMode,
+    startTime =  format(startTime, "%X, %b %d %Y %Z"),
+    endTime = format(endTime, "%X, %b %d %Y %Z"),
+    timeTaken = format(timeTaken, "%X, %b %d %Y %Z"),
+    isSuccessful = isSuccessful)
+  
+  class(inpaintObject) <- "inpaint"
+  inpaintObject
 }
 
 #' @export
-print.inpainting <- function(x, ...){
+print.inpaint <- function(x, ...){
   cat(sep = "\n")
   cat("Image inpainting result", sep = "\n")
   cat(sprintf("  Result : %s", ifelse(x$isSuccessful, 'success', 'fail')), sep = "\n")
   cat(sprintf("  Total time taken (sec) : %s", round(x$timeTaken, digits = 2)), sep = "\n")
-  cat(sprintf("  Output image path : %s", x$fileOut), sep = "\n")
+  cat(sprintf("  Output image path : %s", x$imgOutPath), sep = "\n")
 }
 
 #' @export
-plot.inpainting <- function(x, ...){
+plot.inpaint <- function(x, ...){
   layout(matrix(c(1,1,2,3), 2, 2, byrow = TRUE))
   
-  outputImage <- imager::load.image(x$fileOut)
-  inputImage <- imager::load.image(x$fileIn)
-  occlusionImage <- imager::load.image(x$fileInOcc)
-  
-  plot(outputImage, main = "Inpainted image")
-  plot(inputImage, main = "Input image")
-  plot(occlusionImage, main = "Occlusion input image")
+  plot(x$imgOut, main = "Inpainted image")
+  plot(x$imgIn, main = "Input image")
+  plot(x$imgInOcc, main = "Occlusion input image")
 }
 
 #' @export
-summary.inpainting <- function(object, ...){
-  stopifnot(inherits(object, "inpainting"))
+summary.inpaint <- function(object, ...){
+  stopifnot(inherits(object, "inpaint"))
 
   result <- ifelse(object$isSuccessful, 'success', 'fail')
-  startTime <- format(object$startTime, "%X, %b %d %Y %Z")
-  endTime <- format(object$endTime, "%X, %b %d %Y %Z")
-  output = matrix(c(startTime, endTime, round(object$timeTaken, digits = 2), result, object$fileIn, object$fileInOcc, object$fileOut, object$patchSizeX, object$patchSizeY,
+  output = matrix(c(object$startTime, object$endTime, round(object$timeTaken, digits = 2), result, object$imgInPath, object$imgInOccPath, object$imgOutPath, object$patchSizeX, object$patchSizeY,
                     object$nLevels, object$useFeatures, object$verboseMode), ncol = 1)
   rownames(output) = c("Start time", "End time", "Time taken (sec)", "Result", "Input image path", "Input occlusion image path", "Output iamge path"
                        , "Patch size X", "Patch size Y", "No. of levels", "Use features", "Verbose mode");
@@ -70,15 +86,13 @@ summary.inpainting <- function(object, ...){
   return(output)
 }
 
-file.verify <- function(path) {
+file.verifyOutFile <- function(path) {
   if (!assertthat::is.string(path))
     stop("Incorrect path format")
-  
-  if (!file.exists(path)){
-    file.create(path)
-  }
-  else{
-    file.remove(path)
-  }
+
+  if (!(file_ext(path) %in% c("png", "bmp", "jpeg", "jpg")))
+    stop("Output file must only be a jpeg/png/bmp")
+    
+  file.create(path, overwrite=TRUE)
   assertthat::is.writeable(path)
 }

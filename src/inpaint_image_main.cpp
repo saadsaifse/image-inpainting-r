@@ -29,6 +29,33 @@
 
 using namespace Rcpp;
 
+// [[Rcpp::export]]
+List image_inpaint(std::string fileInS, std::string fileInOccS, std::string fileOutS, int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
+  
+  const char *fileIn = fileInS.c_str();
+  const char *fileInOcc = fileInOccS.c_str();
+  const char *fileOut = fileOutS.c_str();
+  
+  time_t startTime,stopTime;
+  time(&startTime);
+  
+  inpaint_image_wrapper(fileIn,fileInOcc,fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode);
+  
+  time(&stopTime);
+  
+  float timeTaken = fabs(difftime(startTime,stopTime));
+  
+  return List::create(Named("isSuccessful") = LogicalVector::create(1),
+                      Named("timeTaken") = timeTaken,
+                      Named("outputFilePath") = fileOutS,
+                      Named("inputFilePath") = fileInS,
+                      Named("occlusionFilePath") = fileInOccS
+  );
+}
+
+
+// Original library code below that we do not need in R
+
 // static void show_help();
 // 
 // /// help on usage of inpainting code
@@ -135,28 +162,4 @@ using namespace Rcpp;
 // 	return(0);
 // 
 // }
-
-// [[Rcpp::export]]
-List image_inpaint(std::string fileInS, std::string fileInOccS, std::string fileOutS, int patchSizeX, int patchSizeY, int nLevels, bool useFeatures, bool verboseMode) {
-  
-  const char *fileIn = fileInS.c_str();
-  const char *fileInOcc = fileInOccS.c_str();
-  const char *fileOut = fileOutS.c_str();
-
-  time_t startTime,stopTime;
-  time(&startTime);
-  
-  inpaint_image_wrapper(fileIn,fileInOcc,fileOut, patchSizeX, patchSizeY, nLevels, useFeatures, verboseMode);
-  
-  time(&stopTime);
-  
-  float timeTaken = fabs(difftime(startTime,stopTime));
-  
-  return List::create(Named("isSuccessful") = LogicalVector::create(1),
-                     Named("timeTaken") = timeTaken,
-                     Named("outputFilePath") = fileOutS,
-                     Named("inputFilePath") = fileInS,
-                     Named("occlusionFilePath") = fileInOccS
-                      );
-}
 
