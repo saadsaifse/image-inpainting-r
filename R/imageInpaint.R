@@ -20,8 +20,8 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
   
   file.verifyOutFile(fileOut)
   
-  imgIn <- load.image(fileIn)
-  imgInOcc <- load.image(fileInOcc)
+  imgIn <- imager::load.image(fileIn)
+  imgInOcc <- imager::load.image(fileInOcc)
 
   startTime <- Sys.time()
   
@@ -31,7 +31,7 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
   
   timeTaken <- endTime - startTime
   
-  imgOut <- load.image(fileOut)
+  imgOut <- imager::load.image(fileOut)
   
   inpaintObject <- list(
     imgInPath = fileIn,
@@ -48,7 +48,7 @@ imageInpaint <- function(fileIn, fileInOcc, fileOut, patchSizeX = 7L, patchSizeY
     startTime =  format(startTime, "%X, %b %d %Y %Z"),
     endTime = format(endTime, "%X, %b %d %Y %Z"),
     timeTaken = format(timeTaken, "%X, %b %d %Y %Z"),
-    isSuccessful = isSuccessful)
+    isSuccessful = output$isSuccessful)
   
   class(inpaintObject) <- "inpaint"
   inpaintObject
@@ -87,12 +87,14 @@ summary.inpaint <- function(object, ...){
 }
 
 file.verifyOutFile <- function(path) {
-  if (!assertthat::is.string(path))
+  if (!is.character(path) && length(path) != 1)
     stop("Incorrect path format")
 
   if (!(file_ext(path) %in% c("png", "bmp", "jpeg", "jpg")))
     stop("Output file must only be a jpeg/png/bmp")
     
   file.create(path, overwrite=TRUE)
-  assertthat::is.writeable(path)
+  
+  #check if writeable
+  file.access(path, mode = 2)[[1]] == 0
 }

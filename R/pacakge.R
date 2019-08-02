@@ -5,6 +5,7 @@
 #' @docType package
 #' @importFrom Rcpp evalCpp
 #' @importFrom graphics layout plot
+#' @importFrom tools file_ext
 #' @useDynLib imageInpainting
 #' @export imageInpaint
 NULL

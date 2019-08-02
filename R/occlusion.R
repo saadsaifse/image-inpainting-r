@@ -1,13 +1,13 @@
 #' @export
 getOcclusionPixelSet = function(occlusionImage){
-  grays <- grayscale(occlusionImage) #returns a cimg
+  grays <- imager::grayscale(occlusionImage) #returns a cimg
   whiteRegion <- grays > 0 #returns a pixeset
-  boundingBox <- bbox(whiteRegion) #pixelset of the bounding box
+  boundingBox <- imager::bbox(whiteRegion) #pixelset of the bounding box
 }
 
 #' @export
 getImageRegion = function(img, pixelSet){
-  region <- crop.bbox(img, pixelSet)
+  region <- imager::crop.bbox(img, pixelSet)
 }
 
 #' @export
