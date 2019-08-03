@@ -2,12 +2,27 @@
 title: "image-inpainting"
 author: "Muhammad Saad Saif"
 date: "`r Sys.Date()`"
-output: pdf_document
+output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{image-inpainting}
   %\VignetteEngine{knitr::rmarkdown}
   \usepackage[utf8]{inputenc}
 ---
+
+```{r wrap-hook, echo=FALSE}
+library(knitr)
+hook_output = knit_hooks$get('output')
+knit_hooks$set(output = function(x, options) {
+  # this hook is used only when the linewidth option is not NULL
+  if (!is.null(n <- options$linewidth)) {
+    x = knitr:::split_lines(x)
+    # any lines wider than n should be wrapped
+    if (any(nchar(x) > n)) x = strwrap(x, width = n)
+    x = paste(x, collapse = '\n')
+  }
+  hook_output(x, options)
+})
+```
 
 ## Introduction
 The goal of Image inpainting is to fill in the missing regions of an image in a sophisticated and plausible way. There are several existing image processing packages already available in R that offers quite useful image editing and processing techniques such as ImageR, Magick, and EBImage but they lack proper implementation of Image inpainting algorithms. This package tries to fill that gap by providing R users the ability to utilize a recent C/C++ based library that performs "Non-Local Patch-Based Image Inpainting" on images.
@@ -63,22 +78,20 @@ print(inpaintResult)
 
 Summary of the `inpaintResult` is also available in matrix form
 
-```{r}
+```{r linewidth=60}
 summary(inpaintResult)
 ```
 
 To view the inpainted output image alongside input and occlusion images, call the plot function as 
 
-```{r}
-par(mar = c(1, 1, 1, 1))
+```{r fig.height=8, fig.width=6}
 plot(inpaintResult)
 ```
 
 Now to extract the occlusion regions, call `extractOcclusionRegions` method and plot the result as below
 
-```{r}
+```{r fig.height=8, fig.width=6}
 regions <- extractOcclusionRegions(inpaintResult)
-par(mar = c(1, 1, 1, 1))
 plot(regions)
 ```
 
