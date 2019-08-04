@@ -2,6 +2,8 @@
 title: "image-inpainting"
 author: "Muhammad Saad Saif"
 date: "`r Sys.Date()`"
+email: msaif@uni-muenster.de
+package: imageInpainting
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{image-inpainting}
@@ -25,7 +27,7 @@ knit_hooks$set(output = function(x, options) {
 ```
 
 ## Introduction
-The goal of Image inpainting is to fill in the missing regions of an image in a sophisticated and plausible way. There are several existing image processing packages already available in R that offers quite useful image editing and processing techniques such as ImageR, Magick, and EBImage but they lack proper implementation of Image inpainting algorithms. This package tries to fill that gap by providing R users the ability to utilize a recent C/C++ based library that performs "Non-Local Patch-Based Image Inpainting" on images.
+The goal of Image inpainting is to fill in the missing regions of an image in a sophisticated and plausible way. There are several existing image processing packages already available in R that offers quite useful image editing and processing techniques such as Imager, Magick, and EBImage but they lack proper implementation of Image inpainting algorithms. This package tries to fill that gap by providing R users the ability to utilize a recent C/C++ based library that performs "Non-Local Patch-Based Image Inpainting" on images.
 
 Based on the research of Alasdir et al. [1], a patch based image inpainting is possible that smoothly applies patches and can also match patterns and texture in the nearest areas to the occlusion area. An occlusion area is the the region where image inpainting is applied.
 
@@ -63,9 +65,9 @@ First call the `imageInpaint` functions which eventually calls the C/C++ library
 ```{r}
 library(imageInpainting)
 
-inputFile = system.file("extdata", "car.png", package = "imageInpainting")
-inputOccFile = system.file("extdata", "car_occlusion.png", package = "imageInpainting")
-outputFilePath = file.path(getwd(), "car_inpainted.png")
+inputFile = system.file("extdata", "got.png", package = "imageInpainting")
+inputOccFile = system.file("extdata", "got_occlusion.png", package = "imageInpainting")
+outputFilePath = file.path(getwd(), "got_inpainted.png")
 
 inpaintResult = imageInpaint(inputFile, inputOccFile, outputFilePath)
 ```
@@ -94,6 +96,36 @@ Now to extract the occlusion regions, call `extractOcclusionRegions` method and 
 regions <- extractOcclusionRegions(inpaintResult)
 plot(regions)
 ```
+
+## Further Examples
+
+There are a few sample images already placed inside `inst/extdata` directory of the package. Following file names can be used to test them
+
+1. Barbara 
+```{r eval=FALSE}
+inputFile = system.file("extdata", "barbara.png", package = "imageInpainting")
+inputOccFile = system.file("extdata", "barbara_occlusion.png", package = "imageInpainting")
+```
+
+2. Car
+```{r eval=FALSE}
+inputFile = system.file("extdata", "car.png", package = "imageInpainting")
+inputOccFile = system.file("extdata", "car_occlusion.png", package = "imageInpainting")
+```
+
+3. Golf
+```{r eval=FALSE}
+inputFile = system.file("extdata", "golf.png", package = "imageInpainting")
+inputOccFile = system.file("extdata", "golf_occlusion.png", package = "imageInpainting")
+```
+
+4. House
+```{r eval=FALSE}
+inputFile = system.file("extdata", "house.png", package = "imageInpainting")
+inputOccFile = system.file("extdata", "house_occlusion.png", package = "imageInpainting")
+```
+
+After reading input and input occlusion files, call the image inpainting method as explained in the Usage section.
 
 ## References
 1. Newson, A., Almansa, A., Gousseau, Y., & Pérez, P. (2017). Non-local patch-based image inpainting. Image Processing On Line, 7, 373-385.
