@@ -36,6 +36,10 @@ To install, use
 
 `R CMD INSTALL imageInpainting_1.0.tar.gz`
 
+## Vignette
+
+To read a well documented vignette, run `vignette("image-inpainting", package = "imageInpainting")` after installation of the package
+
 ## Usage
 
 First call the `imageInpaint` functions which eventually calls the C/C++ library function in the background
