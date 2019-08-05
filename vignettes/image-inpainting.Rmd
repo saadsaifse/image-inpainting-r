@@ -36,8 +36,9 @@ The whole C/C++ library code base was tweaked to comply with `Rcpp` package's gu
 ## Algorithm Inputs
 
 The algorithm takes two images, one being the actual input image and the second with the occlusion area applied. Background of the second image is blacked out such that only the occlusion area remains white, which also really helps in extracting the occlusion area in the R package. Rest of the arguments control how the algorithm behaves and those include 
-1.  `patchSizeX` : Size of X patch, which can be between 3L to 13L. 7L is most suitable for images between 512x512 to 800x800 pixels and hence it is the default value
-2.  `patchSizeY` : Size of Y patch, which can be between 3L to 13L. 7L is most suitable for images between 512x512 to 800x800 pixels and hence it is the default value
+
+1. `patchSizeX` : Size of X patch, which can be between `3L` to `13L`. `7L` is most suitable for images between 512x512 to 800x800 pixels and hence it is the default value
+2. `patchSizeY` : Size of Y patch, which can be between `3L` to `13L`. `7L` is most suitable for images between 512x512 to 800x800 pixels and hence it is the default value
 3. `nLevels` : Number of pyramid levels (0-15). Defaults to automatic selection by the algorithm
 4. `useFeatures` : A boolean value, the algorithm also matches the region's texture if this is set to true or 1
 5. `verboseMode` : Enables or disables the verbose mode
